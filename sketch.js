@@ -1,3 +1,7 @@
+class Square {
+  
+}
+
 function setup() {
   createCanvas(620, 620);
 }
