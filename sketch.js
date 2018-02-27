@@ -26,7 +26,7 @@ let testSquare;
 
 function setup() {
   createCanvas(620, 620);
-  testSquare = Square(50, 0,0);
+  testSquare = new Square(50, 0,0);
 }
 
 function draw() {
