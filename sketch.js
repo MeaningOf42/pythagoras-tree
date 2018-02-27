@@ -59,6 +59,13 @@ class Triangle {
     let unit_up = p5.Vector.div(up, p5.Vector.dist(this.point1, this.point2));
     this.point3.add(p5.Vector.mult(unit_up, len));
   }
+
+  isRight() {
+    let hyp = p5.Vector.dist(this.point1, this.point2);
+    let opp = p5.Vector.dist(this.point2, this.point3);
+    let adj = p5.Vector.dist(this.point3, this.point1);
+    return Math.pow(hyp, 2) <= Math.pow(opp, 2) + Math.pow(adj, 2);
+  }
 }
 
 let testSquare;
@@ -68,14 +75,18 @@ function setup() {
   createCanvas(620, 620);
   let point1 = createVector(250,400);
   let point2 = createVector(350,400);
-  let point3 = createVector(300, 340);
-  let down_point = createVector(350,800);
-  testSquare = new Square(point1, point2,down_point, 50);
-  //testTriangle = new Triangle(point1, point2, point3);
+  let point3 = createVector(270, 400);
+  testTriangle = new Triangle(point1, point2, point3);
+  //testSquare1 = new Square(point1, point3,point2, 50);
+  //testSquare2 = new Square(point2, point3,point1, 50);
 }
 
 function draw() {
   background(200);
-  testSquare.show(color(255,10,10));
+  // testSquare1.show(color(255,10,10));
+  // testSquare2.show(color(255,10,10));
   testTriangle.show(color(10,10,255));
+  if (!testTriangle.isRight()) {
+    testTriangle.grow(1);
+  }
 }
