@@ -28,6 +28,11 @@ class Square {
     endShape();
   }
 
+  grow(len) {
+    this.len += len;
+    this.calc_points();
+  }
+
 }
 
 class Triangle {
@@ -48,6 +53,12 @@ class Triangle {
 
     endShape();
   }
+
+  grow(len) {
+    let up = p5.Vector.sub(this.point2, this.point1).rotate(-HALF_PI);
+    let unit_up = p5.Vector.div(up, p5.Vector.dist(this.point1, this.point2));
+    this.point3.add(p5.Vector.mult(unit_up, len));
+  }
 }
 
 let testSquare;
@@ -55,12 +66,12 @@ let testTriangle;
 
 function setup() {
   createCanvas(620, 620);
-  let point1 = createVector(0,0);
-  let point2 = createVector(50,0);
-  let point3 = createVector(25, 25);
-  let down_point = createVector(50, -50);
+  let point1 = createVector(250,400);
+  let point2 = createVector(350,400);
+  let point3 = createVector(300, 340);
+  let down_point = createVector(350,800);
   testSquare = new Square(point1, point2,down_point, 50);
-  testTriangle = new Triangle(point1, point2, point3);
+  //testTriangle = new Triangle(point1, point2, point3);
 }
 
 function draw() {
