@@ -6,10 +6,10 @@ class Square {
   }
 
   show(color) {
-    var point1 = [x  , y  ];
-    var point2 = [x  , y+l];
-    var point3 = [x+l, y+l];
-    var point4 = [x  , y  ];
+    var point1 = [this.x  , this.y  ];
+    var point2 = [this.x  , this.y+l];
+    var point3 = [this.x+l, this.y+l];
+    var point4 = [this.x  , this.y  ];
 
     fill(color);
     beginShape();
