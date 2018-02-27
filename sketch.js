@@ -112,13 +112,15 @@ class TreeNode extends Triangle {
     }
   }
 
-  show(main_color) {
+  show(main_color, branches_color,increment) {
     super.show(main_color);
     this.branches.forEach(function(branch){
-      branch.show(color(50,50,255))
+      branch.show(branches_color);
     });
     this.children.forEach(function(child) {
-      child.show(main_color);
+      child.show(color(hue(main_color)+increment, saturation(main_color), brightness(main_color)),
+        color(hue(branches_color)+increment, saturation(branches_color), brightness(branches_color)),
+        increment);
     });
   }
 
@@ -148,9 +150,9 @@ class Tree {
   }
 
   show() {
-    this.trunk.show(color(255,50,50));
+    this.trunk.show(color(50,50,255));
     if (this.baseNode instanceof TreeNode) {
-      this.baseNode.show(color(50,255,50));
+      this.baseNode.show(color(50,255,50), color(50,50,255), 50);
     }
   }
 }
@@ -161,6 +163,7 @@ let testTree;
 let testTriangle;
 
 function setup() {
+  colorMode(HSB);
   createCanvas(1080, 620);
   let point1 = createVector(450,400);
   let point2 = createVector(550,400);
