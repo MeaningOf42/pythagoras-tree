@@ -6,17 +6,13 @@ class Square {
   }
 
   show(color) {
-    var point1 = [this.x       , this.y       ];
-    var point2 = [this.x       , this.y+this.l];
-    var point3 = [this.x+this.l, this.y+this.l];
-    var point4 = [this.x+this.l, this.y       ];
 
     fill(color);
     beginShape();
-    vertex(point1);
-    vertex(point2);
-    vertex(point3);
-    vertex(point4);
+    vertex(this.x       , this.y       );
+    vertex(this.x       , this.y+this.l);
+    vertex(this.x+this.l, this.y+this.l);
+    vertex(this.x+this.l, this.y       );
     endShape();
   }
 
