@@ -77,6 +77,7 @@ class TreeNode extends Triangle {
     let point3 = p5.Vector.sub(point2, point1).normalize().mult(
       p5.Vector.dist(point1, point2)*ratio).add(point1);
     super(point1, point2, point3);
+    this.ratio = ratio;
     this.branches = [];
     this.children = [];
   }
@@ -92,7 +93,17 @@ class TreeNode extends Triangle {
             this.branches[1].grow(p5.Vector.dist(this.point2, this.point3)/100);
           }
       else {
-        console.log("woot");
+        if (this.children[0] instanceof TreeNode && this.children[1] instanceof TreeNode) {
+          this.children.forEach(function(child) {
+            child.grow();
+          });
+        }
+        else {
+          this.children.push(new TreeNode(this.branches[0].point4,
+            this.branches[0].point3, this.ratio));
+          this.children.push(new TreeNode(this.branches[1].point3,
+            this.branches[1].point4, this.ratio));
+        }
       }
     }
     else {
@@ -104,7 +115,11 @@ class TreeNode extends Triangle {
   show(main_color) {
     super.show(main_color);
     this.branches.forEach(function(branch){
-      branch.show(color(50,50,255))});
+      branch.show(color(50,50,255))
+    });
+    this.children.forEach(function(child) {
+      child.show(main_color);
+    });
   }
 
 }
@@ -146,10 +161,10 @@ let testTree;
 let testTriangle;
 
 function setup() {
-  createCanvas(620, 620);
-  let point1 = createVector(250,400);
-  let point2 = createVector(350,400);
-  let point3 = createVector(270, 360);
+  createCanvas(1080, 620);
+  let point1 = createVector(450,400);
+  let point2 = createVector(550,400);
+  let point3 = createVector(500,400);
   testTriangle = new Triangle(point1, point2, point3);
   testTree = new Tree(testTriangle);
   //testSquare1 = new Square(point1, point3,point2, 50);
@@ -160,10 +175,10 @@ function draw() {
   background(200);
   // testSquare1.show(color(255,10,10));
   // testSquare2.show(color(255,10,10));
-  testTriangle.show(color(10,10,255));
-  if (!testTriangle.isRight()) {
-    testTriangle.grow(1);
-  }
+  // testTriangle.show(color(10,10,255));
+  // if (!testTriangle.isRight()) {
+  //   testTriangle.grow(1);
+  // }
   testTree.show();
   testTree.grow();
 }
