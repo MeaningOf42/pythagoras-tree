@@ -68,15 +68,40 @@ class Triangle {
   }
 }
 
-let testSquare;
+class Tree {
+  constructor(baseTriangle) {
+    this.baseLen = Math.abs(baseTriangle.point2.x-baseTriangle.point1.x);
+    this.sideRatio = Math.abs(baseTriangle.point3.x-baseTriangle.point1.x)/
+      this.baseLen;
+    this.trunk = new Square(
+      createVector(baseTriangle.point1.x, baseTriangle.point1.y+this.baseLen),
+      createVector(baseTriangle.point2.x, baseTriangle.point2.y+this.baseLen),
+      createVector(baseTriangle.point2.x, baseTriangle.point2.y+this.baseLen+5),
+      0);
+  }
+  grow(len) {
+    if (this.trunk.len < this.baseLen) {
+      this.trunk.grow(1);
+    }
+  }
+
+  show() {
+    this.trunk.show(color(255,50,50));
+  }
+}
+
+let testSquare1;
+let testSquare2;
+let testTree;
 let testTriangle;
 
 function setup() {
   createCanvas(620, 620);
   let point1 = createVector(250,400);
   let point2 = createVector(350,400);
-  let point3 = createVector(270, 400);
+  let point3 = createVector(270, 360);
   testTriangle = new Triangle(point1, point2, point3);
+  testTree = new Tree(testTriangle);
   //testSquare1 = new Square(point1, point3,point2, 50);
   //testSquare2 = new Square(point2, point3,point1, 50);
 }
@@ -89,4 +114,6 @@ function draw() {
   if (!testTriangle.isRight()) {
     testTriangle.grow(1);
   }
+  testTree.show();
+  testTree.grow();
 }
