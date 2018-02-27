@@ -68,6 +68,23 @@ class Triangle {
   }
 }
 
+class TreeNode extends Triangle {
+  constructor(point1, point2, ratio) {
+    let point3 = p5.Vector.mult(p5.Vector.sub(point2, point1).normalize(),
+      p5.Vector.dist(point1, point2)*ratio);
+    super(point1, point2, point3);
+    this.branches = [];
+    this.children = [];
+  }
+
+  grow() {
+    if (!super.isRight()) {
+      super.grow(1);
+    }
+  }
+
+}
+
 class Tree {
   constructor(baseTriangle) {
     this.baseLen = Math.abs(baseTriangle.point2.x-baseTriangle.point1.x);
@@ -82,6 +99,12 @@ class Tree {
   grow(len) {
     if (this.trunk.len < this.baseLen) {
       this.trunk.grow(1);
+    }
+    else if (this.baseNode instanceof TreeNode) {
+      console.log("woot");
+    }
+    else {
+      this.baseNode = new TreeNode(this.trunk.point4, this.trunk.point3, this.sideRatio);
     }
   }
 
