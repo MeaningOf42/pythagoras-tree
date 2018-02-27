@@ -33,6 +33,10 @@ class Square {
     this.calc_points();
   }
 
+  calcArea() {
+    //assume rectangle
+    return this.len*p5.Vector.dist(this.point1, this.point2);
+  }
 }
 
 class Triangle {
@@ -70,8 +74,8 @@ class Triangle {
 
 class TreeNode extends Triangle {
   constructor(point1, point2, ratio) {
-    let point3 = p5.Vector.mult(p5.Vector.sub(point2, point1).normalize(),
-      p5.Vector.dist(point1, point2)*ratio);
+    let point3 = p5.Vector.sub(point2, point1).normalize().mult(
+      p5.Vector.dist(point1, point2)*ratio).add(point1);
     super(point1, point2, point3);
     this.branches = [];
     this.children = [];
@@ -81,6 +85,26 @@ class TreeNode extends Triangle {
     if (!super.isRight()) {
       super.grow(1);
     }
+    else if (this.branches[0] instanceof Square && this.branches[1] instanceof Square) {
+      if (this.branches[0].calcArea()+this.branches[1].calcArea()
+        < Math.pow(p5.Vector.dist(this.point1, this.point2), 2)) {
+            this.branches[0].grow(p5.Vector.dist(this.point1, this.point3)/100);
+            this.branches[1].grow(p5.Vector.dist(this.point2, this.point3)/100);
+          }
+      else {
+        console.log("woot");
+      }
+    }
+    else {
+      this.branches.push(new Square(this.point1, this.point3, this.point2, 0))
+      this.branches.push(new Square(this.point2, this.point3, this.point1, 0))
+    }
+  }
+
+  show(main_color) {
+    super.show(main_color);
+    this.branches.forEach(function(branch){
+      branch.show(color(50,50,255))});
   }
 
 }
@@ -101,7 +125,7 @@ class Tree {
       this.trunk.grow(1);
     }
     else if (this.baseNode instanceof TreeNode) {
-      console.log("woot");
+      this.baseNode.grow();
     }
     else {
       this.baseNode = new TreeNode(this.trunk.point4, this.trunk.point3, this.sideRatio);
@@ -110,6 +134,9 @@ class Tree {
 
   show() {
     this.trunk.show(color(255,50,50));
+    if (this.baseNode instanceof TreeNode) {
+      this.baseNode.show(color(50,255,50));
+    }
   }
 }
 
