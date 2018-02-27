@@ -2,7 +2,7 @@ class Square {
   constructor(point1, point2, down_point, len) {
     this.point1 = point1;
     this.point2 = point2;
-    this.unit_up = p5.Vector.div(p5.Vector.sub(point2,down_point), \
+    this.unit_up = p5.Vector.div(p5.Vector.sub(point2,down_point),
     p5.Vector.dist(point2,down_point));
     this.calc_points();
   }
