@@ -198,7 +198,7 @@ function setup() {
 }
 
 function draw() {
-  background(color(0,0,0));
+  background(color(0,0,255));
   if (inSetup) {
     if (mouseDown) {
       mouseVector = createVector(mouseX, mouseY);
