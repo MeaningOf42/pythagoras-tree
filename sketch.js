@@ -160,6 +160,7 @@ class Tree {
 }
 
 function third_point(point1, point2, pointIn) {
+  pointIn.y = min(point1.y, pointIn.y);
   let mag = p5.Vector.dist(point1, point2)/2;
   let center = p5.Vector.add(point1, mag);
   let fromCenter = p5.Vector.sub(pointIn, center).setMag(mag);
