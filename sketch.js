@@ -167,7 +167,7 @@ class Tree {
   show(fast_show) {
     this.trunk.show(color(50,50,255));
     if (this.baseNode instanceof TreeNode) {
-      this.baseNode.show(color(50,255,50), color(50,50,255), 10, fast_show);
+      this.baseNode.show(color(150,255,50), color(50,50,255), 10, fast_show);
     }
   }
 }
