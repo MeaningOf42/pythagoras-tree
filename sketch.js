@@ -44,6 +44,7 @@ class Triangle {
     this.point1 = point1;
     this.point2 = point2;
     this.point3 = point3;
+    this.done = false;
   }
 
   show(color) {
@@ -63,6 +64,9 @@ class Triangle {
     if (up.mag()>precision) {
       let unit_up = p5.Vector.div(up, p5.Vector.dist(this.point1, this.point2));
       this.point3.add(p5.Vector.mult(unit_up, len));
+    }
+    else {
+      this.done = true;
     }
   }
 
@@ -94,20 +98,24 @@ class TreeNode extends Triangle {
             this.branches[0].grow(p5.Vector.dist(this.point1, this.point3)/100);
             this.branches[1].grow(p5.Vector.dist(this.point2, this.point3)/100);
           }
-      else {
-        if (this.children[0] instanceof TreeNode && this.children[1] instanceof TreeNode) {
+      else if (this.children[0] instanceof TreeNode && this.children[1] instanceof TreeNode) {
+        if (!this.children.reduce((ac, child)=>ac && child.done)) {
           this.children.forEach(function(child) {
-            child.grow();
-          });
-        }
+              child.grow();
+            });
+          }
         else {
-          this.children.push(new TreeNode(this.branches[0].point4,
-            this.branches[0].point3, this.ratio));
-          this.children.push(new TreeNode(this.branches[1].point3,
-            this.branches[1].point4, this.ratio));
+          this.done = true;
         }
       }
-    }
+      else {
+        this.children.push(new TreeNode(this.branches[0].point4,
+          this.branches[0].point3, this.ratio));
+        this.children.push(new TreeNode(this.branches[1].point3,
+          this.branches[1].point4, this.ratio));
+        }
+
+      }
     else {
       this.branches.push(new Square(this.point1, this.point3, this.point2, 0))
       this.branches.push(new Square(this.point2, this.point3, this.point1, 0))
