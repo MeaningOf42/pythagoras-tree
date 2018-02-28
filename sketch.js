@@ -99,13 +99,14 @@ class TreeNode extends Triangle {
             this.branches[1].grow(p5.Vector.dist(this.point2, this.point3)/100);
           }
       else if (this.children[0] instanceof TreeNode && this.children[1] instanceof TreeNode) {
-        if (!this.children.reduce((ac, child)=>ac && child.done)) {
+        if (this.children.reduce((ac, child)=> ac || !child.done, false)) {
           this.children.forEach(function(child) {
               child.grow();
             });
           }
         else {
           this.done = true;
+          console.log("time saved");
         }
       }
       else {
