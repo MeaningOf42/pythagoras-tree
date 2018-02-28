@@ -157,31 +157,57 @@ class Tree {
   }
 }
 
-let testSquare1;
-let testSquare2;
-let testTree;
-let testTriangle;
+function third_point(point1, point2, pointIn) {
+  let mag = p5.Vector.dist(point1, point2)/2;
+  let center = p5.Vector.add(point1, mag);
+  let fromCenter = p5.Vector.sub(pointIn, center).setMag(mag);
+  return p5.Vector.add(center, fromCenter);
+}
+
+function mousePressed() {
+  mouseDown = true;
+}
+
+function mouseReleased() {
+  mouseDown = false;
+}
+
+function beginGrow() {
+  inSetup = false;
+  userTree = new Tree(userTriangle);
+}
+
+let userTriangle;
+let userTree;
+let inSetup = true;
+let mouseDown = false;
+//these points used to create initial Triangle.
+let point1;
+let point2;
+let point3;
 
 function setup() {
   colorMode(HSB);
   createCanvas(1080, 620);
-  let point1 = createVector(450,400);
-  let point2 = createVector(550,400);
-  let point3 = createVector(500,400);
-  testTriangle = new Triangle(point1, point2, point3);
-  testTree = new Tree(testTriangle);
-  //testSquare1 = new Square(point1, point3,point2, 50);
-  //testSquare2 = new Square(point2, point3,point1, 50);
+  point1 = createVector(450,400);
+  point2 = createVector(550,400);
+  point3 = createVector(500,360);
+  userTriangle = new Triangle(point1, point2, third_point(point1, point2, point3));
+  growButton = createButton('Grow');
+  growButton.mousePressed(beginGrow);
 }
 
 function draw() {
-  background(200);
-  // testSquare1.show(color(255,10,10));
-  // testSquare2.show(color(255,10,10));
-  // testTriangle.show(color(10,10,255));
-  // if (!testTriangle.isRight()) {
-  //   testTriangle.grow(1);
-  // }
-  testTree.show();
-  testTree.grow();
+  background(color(0,0,0));
+  if (inSetup) {
+    if (mouseDown) {
+      mouseVector = createVector(mouseX, mouseY);
+      userTriangle = new Triangle(point1, point2, third_point(point1, point2, mouseVector));
+    }
+    userTriangle.show(color(100,255,255));
+  }
+  else {
+    userTree.grow();
+    userTree.show();
+  }
 }
