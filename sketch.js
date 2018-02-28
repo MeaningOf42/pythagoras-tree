@@ -123,16 +123,19 @@ class TreeNode extends Triangle {
     }
   }
 
-  show(main_color, branches_color,increment) {
-    super.show(main_color);
-    this.branches.forEach(function(branch){
-      branch.show(branches_color);
-    });
-    this.children.forEach(function(child) {
-      child.show(color(hue(main_color)+increment, saturation(main_color), brightness(main_color)),
-        color(hue(branches_color)+increment, saturation(branches_color), brightness(branches_color)),
-        increment);
-    });
+  show(main_color, branches_color,increment, fast_show) {
+    if (!this.done || !fast_show) {
+      super.show(main_color);
+      this.branches.forEach(function(branch){
+        branch.show(branches_color);
+      });
+      this.children.forEach(function(child) {
+        child.show(color(hue(main_color)+increment, saturation(main_color), brightness(main_color)),
+          color(hue(branches_color)+increment, saturation(branches_color), brightness(branches_color)),
+          increment, fast_show);
+      });
+    }
+    else {console.log("time saved")}
   }
 
 }
@@ -160,10 +163,10 @@ class Tree {
     }
   }
 
-  show() {
+  show(fast_show) {
     this.trunk.show(color(50,50,255));
     if (this.baseNode instanceof TreeNode) {
-      this.baseNode.show(color(50,255,50), color(50,50,255), 50);
+      this.baseNode.show(color(50,255,50), color(50,50,255), 50, fast_show);
     }
   }
 }
@@ -187,6 +190,7 @@ function mouseReleased() {
 function beginGrow() {
   inSetup = false;
   userTree = new Tree(userTriangle);
+  background(color(0,0,255));
 }
 
 let userTriangle;
@@ -211,8 +215,8 @@ function setup() {
 }
 
 function draw() {
-  background(color(0,0,255));
   if (inSetup) {
+    background(color(0,0,255));
     if (mouseDown) {
       mouseVector = createVector(mouseX, mouseY);
       userTriangle = new Triangle(point1, point2, third_point(point1, point2, mouseVector));
@@ -226,6 +230,6 @@ function draw() {
   }
   else {
     userTree.grow();
-    userTree.show();
+    userTree.show(true);
   }
 }
