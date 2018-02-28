@@ -60,8 +60,10 @@ class Triangle {
 
   grow(len) {
     let up = p5.Vector.sub(this.point2, this.point1).rotate(-HALF_PI);
-    let unit_up = p5.Vector.div(up, p5.Vector.dist(this.point1, this.point2));
-    this.point3.add(p5.Vector.mult(unit_up, len));
+    if (up.mag()>precision) {
+      let unit_up = p5.Vector.div(up, p5.Vector.dist(this.point1, this.point2));
+      this.point3.add(p5.Vector.mult(unit_up, len));
+    }
   }
 
   isRight() {
@@ -185,6 +187,7 @@ let mouseDown = false;
 let point1;
 let point2;
 let point3;
+let precision = 2;
 
 function setup() {
   colorMode(HSB);
