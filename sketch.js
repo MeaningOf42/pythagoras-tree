@@ -187,7 +187,7 @@ let mouseDown = false;
 let point1;
 let point2;
 let point3;
-let precision = 2;
+let precision = 5;
 
 function setup() {
   colorMode(HSB);
@@ -207,6 +207,11 @@ function draw() {
       mouseVector = createVector(mouseX, mouseY);
       userTriangle = new Triangle(point1, point2, third_point(point1, point2, mouseVector));
     }
+    noFill();
+    stroke(color(0,0,0));
+    let mag = p5.Vector.dist(userTriangle.point1, userTriangle.point2);
+    let center = p5.Vector.add(userTriangle.point1, p5.Vector.sub(userTriangle.point2, userTriangle.point1).div(2))
+    arc(center.x, center.y,mag,mag, PI, 0, PIE);
     userTriangle.show(color(100,255,255));
   }
   else {
