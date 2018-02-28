@@ -135,7 +135,6 @@ class TreeNode extends Triangle {
           increment, fast_show);
       });
     }
-    else {console.log("time saved")}
   }
 
 }
