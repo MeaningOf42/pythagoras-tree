@@ -79,13 +79,14 @@ class Triangle {
 }
 
 class TreeNode extends Triangle {
-  constructor(point1, point2, ratio) {
+  constructor(point1, point2, ratio, show_triangle) {
     let point3 = p5.Vector.sub(point2, point1).normalize().mult(
       p5.Vector.dist(point1, point2)*ratio).add(point1);
     super(point1, point2, point3);
     this.ratio = ratio;
     this.branches = [];
     this.children = [];
+    this.show_triangle = show_triangle;
   }
 
   grow() {
@@ -111,9 +112,9 @@ class TreeNode extends Triangle {
       }
       else {
         this.children.push(new TreeNode(this.branches[0].point4,
-          this.branches[0].point3, this.ratio));
+          this.branches[0].point3, this.ratio, this.show_triangle));
         this.children.push(new TreeNode(this.branches[1].point3,
-          this.branches[1].point4, this.ratio));
+          this.branches[1].point4, this.ratio, this.show_triangle));
         }
 
       }
@@ -125,7 +126,7 @@ class TreeNode extends Triangle {
 
   show(main_color, branches_color,increment, fast_show) {
     if (!this.done || !fast_show) {
-      super.show(main_color);
+      if (this.show_triangle) {super.show(main_color)};
       this.branches.forEach(function(branch){
         branch.show(branches_color);
       });
@@ -140,7 +141,7 @@ class TreeNode extends Triangle {
 }
 
 class Tree {
-  constructor(baseTriangle) {
+  constructor(baseTriangle, show_triangle) {
     this.baseLen = Math.abs(baseTriangle.point2.x-baseTriangle.point1.x);
     this.sideRatio = Math.abs(baseTriangle.point3.x-baseTriangle.point1.x)/
       this.baseLen;
@@ -149,6 +150,7 @@ class Tree {
       createVector(baseTriangle.point2.x, baseTriangle.point2.y+this.baseLen),
       createVector(baseTriangle.point2.x, baseTriangle.point2.y+this.baseLen+5),
       0);
+      this.show_triangle = show_triangle;
   }
   grow(len) {
     if (this.trunk.len < this.baseLen) {
@@ -158,7 +160,7 @@ class Tree {
       this.baseNode.grow();
     }
     else {
-      this.baseNode = new TreeNode(this.trunk.point4, this.trunk.point3, this.sideRatio);
+      this.baseNode = new TreeNode(this.trunk.point4, this.trunk.point3, this.sideRatio, this.show_triangle);
     }
   }
 
@@ -188,7 +190,7 @@ function mouseReleased() {
 
 function beginGrow() {
   inSetup = false;
-  userTree = new Tree(userTriangle);
+  userTree = new Tree(userTriangle, false);
   background(color(0,0,255));
 }
 
